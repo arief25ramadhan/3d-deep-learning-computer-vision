@@ -8,6 +8,7 @@ import numpy as np
 model_type = 'DPT_Large'
 # model_type = 'DPT_Hybrid'
 # model_type = 'MiDaS_small'
+
 midas = torch.hub.load('intel-isl/MiDaS', model_type)
 
 # Move model to GPU if available
@@ -110,5 +111,5 @@ def inference(image_path):
     print('totalTime: ', totalTime)
     
 
-image_path = 'dining.jpg'
+image_path = 'car.png'
 inference(image_path)
