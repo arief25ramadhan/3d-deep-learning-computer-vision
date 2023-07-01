@@ -19,7 +19,7 @@ def webcam():
                                 min_tracking_confidence=0.8,
                                 model_name='Cup') as objectron:
         
-        with cap.isOpened():
+        while cap.isOpened():
 
             succes, image = cap.read()
 
@@ -33,7 +33,7 @@ def webcam():
             results = objectron.process(image)
 
             image.flags.writeable = True
-            image cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
             if results.detected_objects:
 
@@ -41,7 +41,6 @@ def webcam():
 
                     mp_drawing.draw_landmarks(image, detected_object.landmarks_2d, mp_objectron.BOX_CONNECTIONS)
                     mp_drawing.draw_axis(image, detected_object.rotation, detected_object.translation)
-
 
             end = time.time()
 
@@ -55,7 +54,7 @@ def webcam():
 
             if cv2.waitKey(5) & 0xFF == 27:
                 break
-    
+
     cap.release()
 
 
@@ -65,7 +64,7 @@ def inference(image_path):
                                 max_num_objects=2,
                                 min_detection_confidence=0.5,
                                 min_tracking_confidence=0.8,
-                                model_name='Cup') as objectron:
+                                model_name='Chair') as objectron:
         
         start = time.time()
 
@@ -79,7 +78,7 @@ def inference(image_path):
         results = objectron.process(image)
 
         image.flags.writeable = True
-        image cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
         if results.detected_objects:
 
@@ -88,10 +87,9 @@ def inference(image_path):
                 mp_drawing.draw_landmarks(image, detected_object.landmarks_2d, mp_objectron.BOX_CONNECTIONS)
                 mp_drawing.draw_axis(image, detected_object.rotation, detected_object.translation)
 
-
+        cv2.imwrite('predicted.jpg', image)
         end = time.time()
 
         total_time = end-start
-        fps = 1/total_time
 
-        print('FPS: ', fps)
+        print('Total time: ', total_time)
